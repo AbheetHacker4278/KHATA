@@ -17,8 +17,21 @@ document.getElementById('ledgerForm').addEventListener('submit', function(event)
 });
 
 document.getElementById('clearButton').addEventListener('click', function() {
+    const entries = localStorage.getItem('entries');
+    localStorage.setItem('backupEntries', entries);
     localStorage.removeItem('entries');
     displayEntries();
+});
+
+document.getElementById('recoverButton').addEventListener('click', function() {
+    const backupEntries = localStorage.getItem('backupEntries');
+    if (backupEntries) {
+        localStorage.setItem('entries', backupEntries);
+        localStorage.removeItem('backupEntries');
+        displayEntries();
+    } else {
+        alert('No backup found!');
+    }
 });
 
 function displayEntries() {
