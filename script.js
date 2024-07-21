@@ -1,4 +1,3 @@
-const entries = [];
 const ledgerList = document.getElementById('ledgerList');
 const summary = document.getElementById('summary');
 
@@ -9,32 +8,65 @@ document.getElementById('ledgerForm').addEventListener('submit', function(event)
     const amount = parseFloat(document.getElementById('amount').value);
     const description = document.getElementById('description').value;
     
+    const entries = JSON.parse(localStorage.getItem('entries')) || [];
     entries.push({ date, amount, description });
-    
-    const listItem = document.createElement('li');
-    listItem.textContent = `${date} - ₹${amount.toFixed(2)} - ${description}`;
-    ledgerList.appendChild(listItem);
+    localStorage.setItem('entries', JSON.stringify(entries));
     
     document.getElementById('ledgerForm').reset();
-    
-    updateSummary();
+    displayEntries();
 });
 
 document.getElementById('clearButton').addEventListener('click', function() {
-    ledgerList.innerHTML = '';
-    summary.innerHTML = '';
-    entries.length = 0;
+    localStorage.removeItem('entries');
+    displayEntries();
 });
 
-function updateSummary() {
-    const currentDate = new Date();
-    const lastDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-    const today = currentDate.getDate();
+function displayEntries() {
+    const entries = JSON.parse(localStorage.getItem('entries')) || [];
+    ledgerList.innerHTML = '';
+    let monthlyTotals = {};
+
+    entries.forEach(entry => {
+        const formattedDate = formatDate(entry.date);
+        const date = new Date(entry.date);
+        const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+        
+        if (!monthlyTotals[monthYear]) {
+            monthlyTotals[monthYear] = 0;
+        }
+        monthlyTotals[monthYear] += entry.amount;
+
+        const listItem = document.createElement('li');
+        listItem.textContent = `${formattedDate} - ₹${entry.amount.toFixed(2)} - ${entry.description}`;
+        ledgerList.appendChild(listItem);
+    });
+
+    summary.innerHTML = '<h3>Monthly Totals</h3><ul>';
+    for (const [monthYear, total] of Object.entries(monthlyTotals)) {
+        summary.innerHTML += `<li><strong>${monthYear}:</strong> ₹${total.toFixed(2)}</li>`;
+    }
+    summary.innerHTML += '</ul>';
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
     
-    if (today === lastDateOfMonth) {
-        const totalSpent = entries.reduce((acc, entry) => acc + entry.amount, 0);
-        summary.innerHTML = `Total Spent This Month: ₹${totalSpent.toFixed(2)}`;
-    } else {
-        summary.innerHTML = '';
+    const daySuffix = getDaySuffix(day);
+    return `${day}${daySuffix} ${month} ${year}`;
+}
+
+function getDaySuffix(day) {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
     }
 }
+
+// Load entries on page load
+displayEntries();
