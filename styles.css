@@ -1,26 +1,42 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #fdfd96;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #282828;
+    color: #ffffff;
 }
 
 .container {
     background: #ffffff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 320px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
     text-align: center;
+    transition: background 0.3s;
     animation: fadeIn 1s ease-in;
+    margin: 20px;
+}
+
+body.dark-mode .container {
+    background: #424242;
 }
 
 h1 {
     margin-bottom: 20px;
+    font-size: 2em;
+    color: #ff6347;
     animation: slideIn 0.5s ease-out;
 }
 
@@ -31,20 +47,23 @@ form {
 }
 
 input, button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #fc9550;
     transition: all 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
 }
 
 input:focus, button:hover {
-    border-color: #007BFF;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #ff69b4;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
 }
 
 button {
-    background-color: #007BFF;
-    color: white;
+    background-color: #ffe74d;
+    color: rgb(0, 0, 0);
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -57,14 +76,16 @@ ul {
     list-style-type: none;
     padding: 0;
     margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 li {
-    background: #f9f9f9;
+    background: #fafad2;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s, opacity 0.3s;
     animation: bounceIn 0.6s ease-out;
 }
@@ -74,9 +95,15 @@ li:hover {
     opacity: 0.9;
 }
 
+body.dark-mode li {
+    background: #616161;
+}
+
 #summary {
     margin-top: 20px;
     font-weight: bold;
+    font-size: 1.2em;
+    color: #ff6347;
 }
 
 @keyframes fadeIn {
@@ -95,3 +122,4 @@ li:hover {
     80% { transform: scale(0.95); }
     100% { transform: scale(1); }
 }
+

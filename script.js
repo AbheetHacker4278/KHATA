@@ -1,5 +1,6 @@
 const ledgerList = document.getElementById('ledgerList');
 const summary = document.getElementById('summary');
+let lastDeletedEntry = null;
 
 document.getElementById('ledgerForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -32,6 +33,33 @@ document.getElementById('recoverButton').addEventListener('click', function() {
     } else {
         alert('No backup found!');
     }
+});
+
+document.getElementById('deleteRecentButton').addEventListener('click', function() {
+    let entries = JSON.parse(localStorage.getItem('entries')) || [];
+    if (entries.length > 0) {
+        lastDeletedEntry = entries.pop();
+        localStorage.setItem('entries', JSON.stringify(entries));
+        displayEntries();
+    } else {
+        alert('No entries to delete!');
+    }
+});
+
+document.getElementById('recoverRecentButton').addEventListener('click', function() {
+    if (lastDeletedEntry) {
+        let entries = JSON.parse(localStorage.getItem('entries')) || [];
+        entries.push(lastDeletedEntry);
+        localStorage.setItem('entries', JSON.stringify(entries));
+        lastDeletedEntry = null;
+        displayEntries();
+    } else {
+        alert('No recent entry to recover!');
+    }
+});
+
+document.getElementById('darkModeToggle').addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
 });
 
 function displayEntries() {
