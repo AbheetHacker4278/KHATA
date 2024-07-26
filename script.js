@@ -111,3 +111,49 @@ function getDaySuffix(day) {
 
 // Load entries on page load
 displayEntries();
+
+document.getElementById('ledgerForm').addEventListener('submit', function(event) {
+    const date = document.getElementById('date').value;
+    const amount = document.getElementById('amount').value;
+    const description = document.getElementById('description').value;
+
+    if (!date || !amount || !description) {
+        event.preventDefault();
+        showWarning();
+    } else {
+        addEntry(date, amount, description);
+        event.preventDefault();
+    }
+});
+
+function addEntry(date, amount, description) {
+    const ledgerList = document.getElementById('ledgerList');
+    const li = document.createElement('li');
+    li.textContent = `${new Date(date).toLocaleDateString('en-GB')} - ₹${amount} - ${description}`;
+    ledgerList.appendChild(li);
+}
+
+function showWarning() {
+    const warning = document.getElementById('warning');
+    warning.classList.remove('hidden');
+    setTimeout(() => {
+        warning.classList.add('hidden');
+    }, 2000);
+}
+
+document.getElementById('downloadPdfButton').addEventListener('click', async function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = 10;
+    
+    doc.text("Expenses Report", 10, y);
+    y += 10;
+
+    const items = document.querySelectorAll('#ledgerList li');
+    items.forEach(item => {
+        doc.text(item.textContent, 10, y);
+        y += 10;
+    });
+
+    doc.save('ledger.pdf');
+});

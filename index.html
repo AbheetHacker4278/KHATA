@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Abheet Khata</h1>
+        <h1>Khata Book</h1>
         <form id="ledgerForm">
             <input type="date" id="date" required>
             <input type="number" id="amount" placeholder="Amount" required>
@@ -19,10 +19,12 @@
             <button type="button" id="deleteRecentButton">Delete Recent Entry</button>
             <button type="button" id="recoverRecentButton">Recover Recent Entry</button>
             <button type="button" id="darkModeToggle">Toggle Dark Mode</button>
+            <button id="downloadPdfButton">Download as PDF</button>
         </form>
         <ul id="ledgerList"></ul>
         <div id="summary"></div>
     </div>
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
