@@ -1,6 +1,6 @@
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    background-color: #fdfd96;
+    background-color: #fff8db;
     margin: 0;
     padding: 0;
     display: flex;
@@ -66,6 +66,7 @@ button {
     color: rgb(0, 0, 0);
     cursor: pointer;
     transition: transform 0.2s;
+    margin: 4px;
 }
 
 button:active {
@@ -123,3 +124,35 @@ body.dark-mode li {
     100% { transform: scale(1); }
 }
 
+.hidden {
+    display: none;
+}
+
+.login-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+#loginError, #lockoutMessage {
+    color: red;
+    margin-top: 10px;
+}
+
+.animated-human {
+    width: 100px;
+    height: auto;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+}

@@ -7,23 +7,42 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Khata Book</h1>
+    <div class="login-container" id="loginContainer">
+        <h1>Login</h1>
+        <input type="password" id="passwordInput" placeholder="Enter Password">
+        <button id="loginButton">Login</button>
+        <p id="loginError" class="hidden">Incorrect password. Please try again.</p>
+        
+        <h2 style="color: crimson;">Set New Password</h2>
+        <input type="password" id="newPasswordInput" placeholder="New Password">
+        <button id="setPasswordButton">Set Password</button>
+    
+        <p id="lockoutMessage" class="hidden"></p>
+    </div>
+    
+    <div class="container hidden" id="appContainer">
+        <h1>Ledger App</h1>
         <form id="ledgerForm">
             <input type="date" id="date" required>
-            <input type="number" id="amount" placeholder="Amount" required>
+            <input type="number" id="amount" placeholder="Amount (₹)" required>
             <input type="text" id="description" placeholder="Description" required>
             <button type="submit">Add Entry</button>
-            <button type="button" id="clearButton">Clear Entries</button>
-            <button type="button" id="recoverButton">Recover Entries</button>
-            <button type="button" id="deleteRecentButton">Delete Recent Entry</button>
-            <button type="button" id="recoverRecentButton">Recover Recent Entry</button>
-            <button type="button" id="darkModeToggle">Toggle Dark Mode</button>
-            <button id="downloadPdfButton">Download as PDF</button>
         </form>
+        <button id="clearButton">Clear All</button>
+        <button id="recoverButton">Recover</button>
+        <button id="deleteRecentButton">Delete Recent</button>
+        <button id="recoverRecentButton">Recover Recent</button>
+        <button id="downloadPdfButton">Download as PDF</button>
+        <button id="darkModeToggle">Toggle Dark Mode</button>
+        <button id="logoutButton">Logout</button>
         <ul id="ledgerList"></ul>
         <div id="summary"></div>
+        <div id="warning" class="hidden">
+            <img src="no-entry.png" alt="No Entry" class="animated-human">
+            <p>Please fill all fields!</p>
+        </div>
     </div>
+    
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>

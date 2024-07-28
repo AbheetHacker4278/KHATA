@@ -1,3 +1,10 @@
+document.getElementById('logoutButton').addEventListener('click', function() {
+    // Clear any session data if necessary
+    location.reload(); // Reloads the page
+});
+
+// Existing JavaScript code...
+
 const ledgerList = document.getElementById('ledgerList');
 const summary = document.getElementById('summary');
 let lastDeletedEntry = null;
@@ -157,3 +164,69 @@ document.getElementById('downloadPdfButton').addEventListener('click', async fun
 
     doc.save('ledger.pdf');
 });
+let correctPassword = localStorage.getItem('ledgerPassword') || 'defaultpassword'; 
+let attemptsLeft = 3;
+
+document.getElementById('loginButton').addEventListener('click', function() {
+    if (attemptsLeft > 0) {
+        const passwordInput = document.getElementById('passwordInput').value;
+        if (passwordInput === correctPassword) {
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+        } else {
+            attemptsLeft--;
+            document.getElementById('loginError').textContent = `Incorrect password. ${attemptsLeft} attempts left.`;
+            document.getElementById('loginError').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('loginError').classList.add('hidden');
+            }, 2000);
+        }
+    }
+
+    if (attemptsLeft === 0) {
+        startLockoutTimer();
+    }
+});
+
+document.getElementById('setPasswordButton').addEventListener('click', function() {
+    const newPassword = document.getElementById('newPasswordInput').value;
+    if (newPassword) {
+        correctPassword = newPassword;
+        localStorage.setItem('ledgerPassword', newPassword);
+        alert("Password set successfully!");
+    } else {
+        alert("Please enter a new password.");
+    }
+});
+
+document.getElementById('resetPasswordButton').addEventListener('click', function() {
+    const resetPassword = document.getElementById('resetPasswordInput').value;
+    if (resetPassword) {
+        correctPassword = resetPassword;
+        localStorage.setItem('ledgerPassword', resetPassword);
+        alert("Password reset successfully!");
+    } else {
+        alert("Please enter a new password to reset.");
+    }
+});
+
+function startLockoutTimer() {
+    let countdown = 45;
+    const lockoutMessage = document.getElementById('lockoutMessage');
+    lockoutMessage.textContent = `Too many attempts. Please wait ${countdown} seconds.`;
+    lockoutMessage.classList.remove('hidden');
+    document.getElementById('loginButton').disabled = true;
+
+    const timer = setInterval(() => {
+        countdown--;
+        lockoutMessage.textContent = `Too many attempts. Please wait ${countdown} seconds.`;
+
+        if (countdown <= 0) {
+            clearInterval(timer);
+            lockoutMessage.classList.add('hidden');
+            document.getElementById('loginButton').disabled = false;
+            attemptsLeft = 3; // Reset attempts after lockout
+        }
+    }, 1000);
+}
+
